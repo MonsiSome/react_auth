@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { AlertContext } from '../context/alert/alertContext'
 import { User } from '../user'
+import { clearTokens } from '../utils/clearTokens'
 
 export const Home = (props) => {
   const {show, hide} = useContext(AlertContext)
@@ -76,7 +77,7 @@ export const Home = (props) => {
     <div>
       <h1 className="mt-4 mb-4">Login page</h1>
 
-      <form onSubmit={onSubmitHandler}>
+      <form onSubmit={(e) => onSubmitHandler(e)}>
         <div className="form-group">
           <label htmlFor="email">Email address</label>
           <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="email@gmail.com" required/>
@@ -93,65 +94,4 @@ export const Home = (props) => {
       </form>
     </div>
   )
-}
-
-// const access = document.querySelector('.access');
-// const refresh = document.querySelector('.refresh');
-
-// access.addEventListener('click', clickHandler);
-// refresh.addEventListener('click', clickHandler);
-
-// function clickHandler(event) {
-//   event.preventDefault();
-//   userStatusMessage.innerHTML = '';
-//   userStatusMessage.style.color = 'black';
-//   console.log('access_token', localStorage.getItem('access_token'));
-//   console.log('refresh_token', localStorage.getItem('refresh_token'));
-//   if(
-//     !localStorage.getItem('access_token') ||
-//     !localStorage.getItem('refresh_token')
-//   ) {
-//     requestStatus.innerHTML = 'Log in, please...';
-//     return;
-//   }
-
-//   if (event.target.classList.contains("access")) {
-//     requestStatus.innerHTML = 'Access...';
-  
-//     User.getAccess()
-//       .then(response => {
-//         console.log(response);
-//         requestStatus.innerHTML = '';
-//         userStatusMessage.innerHTML = `${response.data.body.message}`;
-//         response.data.body.status === 'error' ? userStatusMessage.style.color = 'darkred'
-//           : userStatusMessage.style.color = 'black';
-//       })
-//       .catch(function (error) {
-//         requestStatus.innerHTML = `${error.message}`;
-//       });
-//   } else {
-//     requestStatus.innerHTML = 'Refresh...';
-
-//     User.doRefresh()
-//       .then(response => {
-//         console.log(response);
-//         if (response.data.statusCode === 200) {
-//           localStorage.setItem('access_token', response.data.body.access_token);
-//           userStatusMessage.innerHTML = 'Refershed';
-//         } else {
-//           userStatusMessage.innerHTML = `${response.data.body.message}`;
-//           userStatusMessage.style.color = 'darkred';
-//           clearTokens();
-//         }
-//         requestStatus.innerHTML = '';
-//       })
-//       .catch(function (error) {
-//         requestStatus.innerHTML = `${error.message}`;
-//       });
-//   }
-// }
-
-export function clearTokens() {
-  localStorage.clear('access_token');
-  localStorage.clear('refresh_token');
 }
