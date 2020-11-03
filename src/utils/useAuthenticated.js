@@ -1,6 +1,6 @@
-const { useEffect, useState } = require("react");
-const { clearTokens } = require("../pages/Home");
-const { User } = require("../user");
+import { useEffect, useState } from "react";
+import { User } from "../user";
+import { clearTokens } from "./clearTokens";
 
 export function useAuthenticated() {
   const [authenticated, updateAuth] = useState(null);
@@ -38,40 +38,38 @@ export function useAuthenticated() {
       
       if (!authenticated && !!localStorage.getItem('refresh_token')) {
         authenticated = await User.doRefresh()
-                .then(response => {
-                  console.log('Refreshing...', response);
-                  if (response.data.statusCode === 200) {
-                    localStorage.setItem('access_token', response.data.body.access_token);
-                    console.log('Refreshed');
-                    // show('Refershed');
-                    return true;
-                  } else {
-                    // hide();
-                    clearTokens();
-                    console.log('Wronge refresh token - clear tokens');
-                    return false;
-                  }
-                })
-                .catch(function (error) {
-                  // hide();
-                  clearTokens();
-                  console.log('Wronge request - clear tokens');
-                  return false;
-                });
+          .then(response => {
+            console.log('Refreshing...', response);
+            if (response.data.statusCode === 200) {
+              localStorage.setItem('access_token', response.data.body.access_token);
+              console.log('Refreshed');
+              // show('Refershed');
+              return true;
+            } else {
+              // hide();
+              clearTokens();
+              console.log('Wronge refresh token - clear tokens');
+              return false;
+            }
+          })
+          .catch(function (error) {
+            // hide();
+            clearTokens();
+            console.log('Wronge request - clear tokens');
+            return false;
+          });
       }
 
       if(!localStorage.getItem('access_token') && !localStorage.getItem('refresh_token')) {
-        authenticated = false
-        updateAuth(authenticated);
-        console.log('No tokens - no auth')
-        return false;
+        authenticated = false;
+        console.log('No tokens - no auth');
       }
       
       updateAuth(authenticated);
     } catch (e) {
+      console.log(e);
       setError(e);
     } finally {
-      // updateAuth(authenticated); // where use it
       setLoading(false);
     }
   }

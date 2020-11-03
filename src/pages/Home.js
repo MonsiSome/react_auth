@@ -8,7 +8,7 @@ export const Home = (props) => {
 
   const onSubmitHandler = event => {
     event.preventDefault()
-    console.log(event); //
+    console.log(event);
     clearTokens();
 
     const email = event.target.querySelector('#email');
@@ -20,7 +20,6 @@ export const Home = (props) => {
       User.doLogin(newUser.email, newUser.password)
         .then(response => {
           console.log(response);
-          // console.log('status_code', !!response.data['status_code']);
           if (!!response.data['status_code']) {
             show(`${response.data.body.message}`, 'danger');
             return response;
@@ -31,7 +30,7 @@ export const Home = (props) => {
             hide();
             email.value = '';
             password.value = '';
-            props.history.push('/profile');
+            // props.history.push('/profile');
           } else {
             show(`${response.data.message}`, 'danger');
           }
